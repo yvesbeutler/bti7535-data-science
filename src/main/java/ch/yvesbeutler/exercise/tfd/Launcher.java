@@ -5,12 +5,15 @@ import org.apache.commons.io.LineIterator;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author yvesbeutler
  * Term Frequency Distribution (TFD)
+ * This application separates every single word from a given text and sorts the used
+ * words in order of their number of appearances, starting with the most common word.
  */
 public class Launcher {
 
@@ -25,7 +28,7 @@ public class Launcher {
 
             try {
 
-                List<SingleWord> results = new ArrayList<>();
+                Map<String, Integer> results = new HashMap<>();
 
                 while (iterator.hasNext()) {
                     String line = iterator.nextLine();
@@ -35,21 +38,24 @@ public class Launcher {
                     String[] words = line.split(regex);
 
                     for(String word : words) {
-                        System.out.println(word);
-
-                        if(results.contains(word)) {
-                            // something like that
-                            results.get(0).increase();
-                        } else {
-                            results.add(new SingleWord(word));
+                        // words must contain at least 2 chars
+                        if(word.length() > 1) {
+                            if(results.containsKey(word)) {
+                                // update amount
+                                results.put(word, results.get(word) + 1);
+                            } else {
+                                // add new entry
+                                results.put(word, 1);
+                            }
                         }
                     }
-
-                    // create new array entry for every new word
-
-                    // update array value by +1
-
                 }
+
+                // Sort the map with streams
+                results.entrySet().stream()
+                        .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
+                        .forEach(System.out::println);
+
             } finally {
                 LineIterator.closeQuietly(iterator);
             }
