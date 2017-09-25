@@ -38,8 +38,6 @@ public class Launcher {
                     String[] words = line.split(regex);
 
                     for(String word : words) {
-                        // only use lower case words
-                        word = word.toLowerCase();
 
                         // words must contain at least 1 char
                         if(word.length() > 0) {
