@@ -38,8 +38,11 @@ public class Launcher {
                     String[] words = line.split(regex);
 
                     for(String word : words) {
-                        // words must contain at least 2 chars
-                        if(word.length() > 1) {
+                        // only use lower case words
+                        word = word.toLowerCase();
+
+                        // words must contain at least 1 char
+                        if(word.length() > 0) {
                             if(results.containsKey(word)) {
                                 // update amount
                                 results.put(word, results.get(word) + 1);
